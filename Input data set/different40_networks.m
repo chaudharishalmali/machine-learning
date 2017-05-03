@@ -89,55 +89,55 @@ ezroc3(-1*[Intraclass,Interclass], [ones(1,600),zeros(1,28080)],2,'Hidden size1 
 
 y = zeros(40,160);
 
-% for sub = 1:40  
+for sub = 1:40  
     
     %Training the final softmax layer
     softnet = trainSoftmaxLayer(feat2,tTrain(1,:),'MaxEpochs',400);
     deepnet = stack(autoenc1,autoenc2,softnet);
     view(deepnet);
     
-%     %----------------------------------------------------------------------------------------------------------
-%     
-%     %To reshape the test images into a matrix
-%     
-%     % Get the number of pixels in each image
-%     imageWidth = 92;
-%     imageHeight = 112;
-%     inputSize1 = imageWidth*imageHeight;
-%     
-%     % Turn the test images into vectors and put them in a matrix
-%     
-%     xTest = zeros(inputSize1,numel(inTest));
-%     for i = 1:numel(inTest)
-%          xTest(:,i) = inTest{i}(:);
-%     end
-%     
-%     %----------------------------------------------------------------------------------------------------------
-%     
-%     %To visualize the results with a confusion matrix
-%     
-%     y(sub,:) = deepnet(xTest);
-%     
-%     %----------------------------------------------------------------------------------------------------------
-%     
-%     %Fine tuning the deep neural network
-%     
-%     % Turn the training images into vectors and put them in a matrix
-%     xTrain = zeros(inputSize1,numel(inTrain));
-%     for i = 1:numel(inTrain)
-%          xTrain(:,i) = inTrain{i}(:);
-%     end
-%     
-%     % Perform fine tuning
-%     deepnet = train(deepnet,xTrain,tTrain(sub,:));
-%     
-%     %----------------------------------------------------------------------------------------------------------
-%     
-%     %view the results again using a confusion matrix
-%     y(sub,:) = deepnet(xTest);
-%       
-% end
-% 
-% ezroc3(y,tTest,2,'ROC after fine tuning',1);
-% plotconfusion(tTest,y)
-% 
+    %----------------------------------------------------------------------------------------------------------
+
+    %To reshape the test images into a matrix
+
+    % Get the number of pixels in each image
+    imageWidth = 92;
+    imageHeight = 112;
+    inputSize1 = imageWidth*imageHeight;
+
+    % Turn the test images into vectors and put them in a matrix
+  
+    xTest = zeros(inputSize1,numel(inTest));
+    for i = 1:numel(inTest)
+        xTest(:,i) = inTest{i}(:);
+    end
+     
+    %----------------------------------------------------------------------------------------------------------
+    
+    %To visualize the results with a confusion matrix
+    
+    y(sub,:) = deepnet(xTest);
+    
+    %----------------------------------------------------------------------------------------------------------
+    
+    %Fine tuning the deep neural network
+    
+    % Turn the training images into vectors and put them in a matrix
+    xTrain = zeros(inputSize1,numel(inTrain));
+    for i = 1:numel(inTrain)
+        xTrain(:,i) = inTrain{i}(:);
+    end
+    
+    % Perform fine tuning
+    deepnet = train(deepnet,xTrain,tTrain(sub,:))
+         
+    %----------------------------------------------------------------------------------------------------------
+   
+    %view the results again using a confusion matrix
+    y(sub,:) = deepnet(xTest);
+      
+end
+ 
+ezroc3(y,tTest,2,'ROC after fine tuning',1);
+plotconfusion(tTest,y)
+ 
